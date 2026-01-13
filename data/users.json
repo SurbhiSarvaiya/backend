@@ -1,0 +1,18 @@
+[
+  {
+    "_id": "1767776698911",
+    "name": "Jitendrasinh",
+    "mobile": "9978006069",
+    "password": "$2a$10$kpIq7Eie9N3O8jGgcItEgutaqoNj573/2uW/8I6vDT7Zl8.zAW.C.",
+    "role": "student",
+    "createdAt": "2026-01-07T09:04:58.911Z"
+  },
+  {
+    "_id": "1767776851457",
+    "name": "Admin User",
+    "mobile": "admin123",
+    "password": "$2a$10$8LRt.w9/OmMWrpbkUm4uH.KRkFLBtdlDIojsaAVl73d4VaQ4oEPi6",
+    "role": "admin",
+    "createdAt": "2026-01-07T09:07:31.457Z"
+  }
+]
