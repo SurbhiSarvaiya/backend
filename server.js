@@ -23,6 +23,10 @@ app.use('/api/users', userRoutes);
 app.use('/api/exams', examRoutes);
 app.use('/api/results', resultRoutes);
 
+app.get("/", (req, res) => {
+  res.send("Backend is running");
+});
+
 // Basic Route
 app.get('/', (req, res) => {
     res.send('Online Quiz API is running...');
@@ -31,8 +35,5 @@ app.get('/', (req, res) => {
 // Start Server
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
-});
-app.get("/", (req, res) => {
-  res.send("Backend is running");
 });
 
