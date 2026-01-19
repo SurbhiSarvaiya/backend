@@ -19,8 +19,8 @@ const resultRoutes = require('./routes/resultRoutes');
 
 
 // Routes
-
-app.use('/api/users', userRoutes);
+app.use('/api/auth', userRoutes);
+//app.use('/api/users', userRoutes);
 app.use('/api/exams', examRoutes);
 app.use('/api/results', resultRoutes);
 
