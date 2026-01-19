@@ -3,7 +3,7 @@ const express = require('express');
 // mongoose.connect(process.env.MONGO_URI)...
 const cors = require('cors');
 const dotenv = require('dotenv');
-//import authRoutes from "./routes/authRoutes.js";
+
 dotenv.config();
 
 const app = express();
@@ -19,14 +19,9 @@ const resultRoutes = require('./routes/resultRoutes');
 
 
 // Routes
-app.use("/api/auth", authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/exams', examRoutes);
 app.use('/api/results', resultRoutes);
-
-app.get("/", (req, res) => {
-  res.send("Backend is running");
-});
 
 // Basic Route
 app.get('/', (req, res) => {
@@ -37,4 +32,3 @@ app.get('/', (req, res) => {
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
-
