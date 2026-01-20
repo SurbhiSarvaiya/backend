@@ -1,10 +1,10 @@
-import connectDB from "./config/db.js";
+
 const express = require('express');
 // Database Connection (REMOVED - Using Local File System)
 // mongoose.connect(process.env.MONGO_URI)...
 const cors = require('cors');
 const dotenv = require('dotenv');
-
+const connectDB =require('./config/db.js');
 dotenv.config();
 
 const app = express();
