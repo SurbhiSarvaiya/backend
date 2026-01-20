@@ -1,3 +1,4 @@
+import connectDB from "./config/db.js";
 const express = require('express');
 // Database Connection (REMOVED - Using Local File System)
 // mongoose.connect(process.env.MONGO_URI)...
@@ -7,6 +8,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const app = express();
+connectDB();
 const PORT = process.env.PORT || 5000;
 
 // Middleware
