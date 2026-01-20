@@ -8,7 +8,7 @@ const connectDB =require('./config/db.js');
 dotenv.config();
 
 const app = express();
-connectDB();
+
 const PORT = process.env.PORT || 5000;
 
 // Middleware
