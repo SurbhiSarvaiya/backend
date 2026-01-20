@@ -45,7 +45,7 @@ router.post('/register', async (req, res) => {
 // @route   POST /api/users/login
 // @access  Public
 router.post('/login', async (req, res) => {
-    const { mobile, password } = req.body;
+    const { email, password } = req.body;
     const user = await User.findOne({ mobile });
 
     if (user && (await user.matchPassword(password))) {
