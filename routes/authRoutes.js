@@ -1,4 +1,5 @@
-const express = require('express');
+//const express = require('express');
+import express from "express";
 
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
@@ -6,6 +7,7 @@ const bcrypt = require('bcryptjs');
 
 import { loginUser, registerUser } from "../controllers/authController.js";
 const router = express.Router();
+
 router.post("/login", loginUser);
 const generateToken = (id) => {
     return jwt.sign({ id }, process.env.JWT_SECRET, {
