@@ -6,6 +6,8 @@ import jwt from "jsonwebtoken";
 const __dirname = new URL('.', import.meta.url).pathname;
 const usersFile = path.join(__dirname, "../data/users.json");
 
+const users = [];
+
 const readUsers = () => {
   if (!fs.existsSync(usersFile)) return [];
   return JSON.parse(fs.readFileSync(usersFile));
