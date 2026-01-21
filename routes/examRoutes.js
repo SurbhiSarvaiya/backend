@@ -147,6 +147,7 @@ router.post('/', protect, admin, async (req, res) => {
         totalMarks,
         passingMarks,
         createdBy: req.user._id
+        isActive: true
     });
     const createdExam = await exam.save();
     res.status(201).json(createdExam);
