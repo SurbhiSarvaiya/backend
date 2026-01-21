@@ -40,6 +40,11 @@ export const registerUser = async (req, res) => {
   writeUsers(users);
 
   res.status(201).json({ message: "User registered successfully" });
+  return res.json({
+    token,
+    role: "user",
+    user: { mobile }
+  });
 };
 
 // LOGIN
@@ -64,15 +69,11 @@ export const loginUser = async (req, res) => {
     { expiresIn: "1d" }
   );
 
-/*  res.json({
+ return res.json({
     id: user.id,
     mobile: user.mobile,
     role: user.role,
     token
-  });*/
-  return res.json({
-    token,
-    role: "user",
-    user: { mobile }
   });
+
 };
