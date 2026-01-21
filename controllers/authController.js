@@ -64,10 +64,15 @@ export const loginUser = async (req, res) => {
     { expiresIn: "1d" }
   );
 
-  res.json({
+/*  res.json({
     id: user.id,
     mobile: user.mobile,
     role: user.role,
     token
+  });*/
+  return res.json({
+    token,
+    role: "user",
+    user: { mobile }
   });
 };
