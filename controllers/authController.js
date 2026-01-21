@@ -1,53 +1,71 @@
-const jwt = require("jsonwebtoken");
+import fs from "fs";
+import path from "path";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
-// TEMP in-memory user store
-const users = [];
+const __dirname = new URL('.', import.meta.url).pathname;
+const usersFile = path.join(__dirname, "../data/users.json");
 
-exports.register = (req, res) => {
-  const { mobile, password } = req.body;
+const readUsers = () => {
+  if (!fs.existsSync(usersFile)) return [];
+  return JSON.parse(fs.readFileSync(usersFile));
+};
 
-  const exists = users.find(u => u.mobile === mobile);
-  if (exists) {
+const writeUsers = (users) => {
+  fs.writeFileSync(usersFile, JSON.stringify(users, null, 2));
+};
+
+// REGISTER
+export const registerUser = async (req, res) => {
+  const { mobile, password, role } = req.body;
+
+  const users = readUsers();
+  const userExists = users.find(u => u.mobile === mobile);
+  if (userExists) {
     return res.status(400).json({ message: "User already exists" });
   }
 
-  users.push({
-    mobile,
-    password,
-    role: "user"
-  });
+  const hashedPassword = await bcrypt.hash(password, 10);
 
-  res.json({ message: "User registered successfully" });
+  const newUser = {
+    id: Date.now(),
+    mobile,
+    password: hashedPassword,
+    role: role || "student"
+  };
+
+  users.push(newUser);
+  writeUsers(users);
+
+  res.status(201).json({ message: "User registered successfully" });
 };
 
-exports.login = (req, res) => {
+// LOGIN
+export const loginUser = async (req, res) => {
   const { mobile, password } = req.body;
 
-  // ADMIN (hard-coded)
-  if (mobile === "9999999999" && password === "admin123") {
-    const token = jwt.sign(
-      { mobile, role: "admin" },
-      process.env.JWT_SECRET,
-      { expiresIn: "1d" }
-    );
-
-    return res.json({ token, role: "admin" });
-  }
-
-  // NORMAL USER
-  const user = users.find(
-    u => u.mobile === mobile && u.password === password
-  );
+  const users = readUsers();
+  const user = users.find(u => u.mobile === mobile);
 
   if (!user) {
-    return res.status(401).json({ message: "invalid mobile and password" });
+    return res.status(401).json({ message: "Invalid credentials" });
+  }
+
+  const isMatch = await bcrypt.compare(password, user.password);
+  if (!isMatch) {
+    return res.status(401).json({ message: "Invalid credentials" });
   }
 
   const token = jwt.sign(
-    { mobile, role: "user" },
-    process.env.JWT_SECRET,
+    { id: user.id, role: user.role },
+    process.env.JWT_SECRET || "secret123",
     { expiresIn: "1d" }
   );
 
-  res.json({ token, role: "user" });
+  res.json({
+    id: user.id,
+    mobile: user.mobile,
+    role: user.role,
+    token
+  });
 };
