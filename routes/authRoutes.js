@@ -1,11 +1,12 @@
-//const express = require('express');
-import express from "express";
-import User from '../models/User.js';
-//const User = require('../models/User');
+const express = require('express');
+//import express from "express";
+//import User from '../models/User.js';
+const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 
-import { loginUser, registerUser } from "../controllers/authController.js";
+const loginUser=require('../controllers/authController.js');
+//import { loginUser, registerUser } from "../controllers/authController.js";
 const router = express.Router();
 
 router.post("/login", loginUser);
