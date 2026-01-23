@@ -116,13 +116,13 @@ router.post('/:id/upload', protect, admin, upload.single('file'), async (req, re
     res.json(exams);
 });*/
 router.get('/', protect, async (req, res) => {
-   let exams;
+  console.log("🔥 /api/exams HIT");
+  console.log("USER:", req.user);
 
-    if (req.user.role === 'admin') {
-        exams = await Exam.find(); // admin sees all
-    } else {
-        exams = await Exam.find({ isActive: true }); // students see active only
-    }
+  const exams = await Exam.find();
+  res.json(exams);
+});
+
 
     res.json(exams);
 });
