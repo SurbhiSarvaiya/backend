@@ -68,12 +68,12 @@ export const loginUser = async (req, res) => {
     process.env.JWT_SECRET || "secret123",
     { expiresIn: "1d" }
   );
-
- return res.json({
-    id: user.id,
-    mobile: user.mobile,
-    role: user.role,
-    token
-  });
+res.json({
+  _id: user._id,
+  name: user.name,
+  mobile: user.mobile,
+  role: user.role,
+  token
+});
 
 };
