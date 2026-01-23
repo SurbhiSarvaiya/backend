@@ -116,19 +116,18 @@ router.post('/:id/upload', protect, admin, upload.single('file'), async (req, re
     res.json(exams);
 });*/
 
-router.get('/', protect, async (req, res) => {
+router.get("/", protect, async (req, res) => {
   try {
     const exams =
       req.user.role === "admin"
-        ? await Exam.find()
-        : await Exam.find({ isActive: true });
+        ? await Exam.find().sort({ createdAt: -1 })
+        : await Exam.find({ isActive: true }).sort({ createdAt: -1 });
 
     res.json(exams);
   } catch (err) {
     res.status(500).json({ message: "Failed to fetch exams" });
   }
 });
-
 // @desc    Get single exam with questions (Admin only gets all details, Student gets limited?)
 //          Actually, student needs questions when starting exam.
 // @route   GET /api/exams/:id
@@ -164,29 +163,34 @@ router.get('/:id', protect, async (req, res) => {
     const createdExam = await exam.save();
     res.status(201).json(createdExam);
 });
-router.post('/', protect, admin, async (req, res) => {
-  if (!req.user) {
-    return res.status(401).json({ message: "User not authorized" });
+*/
+router.post("/", protect, admin, async (req, res) => {
+  try {
+    const { title, duration, totalMarks, passingMarks } = req.body;
+
+    const exam = new Exam({
+      title,
+      duration,
+      totalMarks,
+      passingMarks,
+      createdBy: req.user.id,
+      isActive: true
+    });
+
+    const createdExam = await exam.save();
+    res.status(201).json(createdExam);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Failed to create exam" });
   }
-
-  const exam = new Exam({
-    title: req.body.title,
-    duration: req.body.duration,
-    totalMarks: req.body.totalMarks,
-    passingMarks: req.body.passingMarks,
-    createdBy: req.user._id,
-    isActive: true
-  });
-
-  const createdExam = await exam.save();
-  res.status(201).json(createdExam);
-});*/
+});
+/*
 router.post('/', protect, async (req, res) => {
   res.json({
     ok: true,
     user: req.user
   });
-});
+});*/
 
 // @desc    Add question to exam
 // @route   POST /api/exams/:id/questions
