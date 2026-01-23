@@ -164,7 +164,6 @@ router.get('/:id', protect, async (req, res) => {
     const createdExam = await exam.save();
     res.status(201).json(createdExam);
 });
-*/
 router.post('/', protect, admin, async (req, res) => {
   if (!req.user) {
     return res.status(401).json({ message: "User not authorized" });
@@ -181,6 +180,11 @@ router.post('/', protect, admin, async (req, res) => {
 
   const createdExam = await exam.save();
   res.status(201).json(createdExam);
+});*/
+router.post('/', protect, admin, async (req, res) => {
+  console.log("🔥 CREATE EXAM HIT");
+  console.log("USER:", req.user);
+  res.json({ message: "Reached controller" });
 });
 
 // @desc    Add question to exam
