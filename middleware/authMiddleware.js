@@ -22,13 +22,27 @@ const protect = (req, res, next) => {
         return res.status(401).json({ message: 'Not authorized, no token' });
     }
 };
-
+/*
 const admin = (req, res, next) => {
     if (req.user && req.user.role === 'admin') {
         next();
     } else {
         res.status(401).json({ message: 'Not authorized as an admin' });
     }
+};
+*/
+const admin = (req, res, next) => {
+  console.log("🔥 ADMIN MIDDLEWARE HIT");
+  console.log("USER IN ADMIN:", req.user);
+
+  if (req.user && req.user.role === "admin") {
+    next();
+  } else {
+    return res.status(401).json({
+      message: "Admin access only",
+      user: req.user
+    });
+  }
 };
 
 module.exports = { protect, admin };
