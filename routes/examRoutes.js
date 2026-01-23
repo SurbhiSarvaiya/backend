@@ -116,7 +116,7 @@ router.post('/:id/upload', protect, admin, upload.single('file'), async (req, re
     res.json(exams);
 });*/
 
-router.get("/", protect, async (req, res) => {
+router.get('/', protect, async (req, res) => {
   try {
     const exams =
       req.user.role === "admin"
@@ -128,6 +128,8 @@ router.get("/", protect, async (req, res) => {
     res.status(500).json({ message: "Failed to fetch exams" });
   }
 });
+
+
 // @desc    Get single exam with questions (Admin only gets all details, Student gets limited?)
 //          Actually, student needs questions when starting exam.
 // @route   GET /api/exams/:id
