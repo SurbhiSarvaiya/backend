@@ -175,7 +175,7 @@ router.post("/", protect, admin, async (req, res) => {
       duration,
       totalMarks,
       passingMarks,
-      createdBy: req.user.id,
+   //   createdBy: req.user.id,
       isActive: true
     });
 
