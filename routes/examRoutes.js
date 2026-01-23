@@ -148,7 +148,7 @@ router.get('/:id', protect, async (req, res) => {
 // @desc    Create an exam
 // @route   POST /api/exams
 // @access  Private/Admin
-router.post('/', protect, admin, async (req, res) => {
+/*router.post('/', protect, admin, async (req, res) => {
     const { title, duration, totalMarks, passingMarks } = req.body;
     const exam = new Exam({
         title,
@@ -160,6 +160,24 @@ router.post('/', protect, admin, async (req, res) => {
     });
     const createdExam = await exam.save();
     res.status(201).json(createdExam);
+});
+*/
+router.post('/', protect, admin, async (req, res) => {
+  if (!req.user) {
+    return res.status(401).json({ message: "User not authorized" });
+  }
+
+  const exam = new Exam({
+    title: req.body.title,
+    duration: req.body.duration,
+    totalMarks: req.body.totalMarks,
+    passingMarks: req.body.passingMarks,
+    createdBy: req.user._id,
+    isActive: true
+  });
+
+  const createdExam = await exam.save();
+  res.status(201).json(createdExam);
 });
 
 // @desc    Add question to exam
