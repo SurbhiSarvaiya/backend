@@ -155,7 +155,7 @@ router.post('/', protect, admin, async (req, res) => {
         duration,
         totalMarks,
         passingMarks,
-        createdBy: req.user._id
+        createdBy: req.user._id,
         isActive: true
     });
     const createdExam = await exam.save();
