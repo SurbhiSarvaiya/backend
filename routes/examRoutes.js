@@ -116,7 +116,7 @@ router.post('/:id/upload', protect, admin, upload.single('file'), async (req, re
     res.json(exams);
 });*/
 router.get('/', protect, async (req, res) => {
-    const exams;
+   let exams;
 
     if (req.user.role === 'admin') {
         exams = await Exam.find(); // admin sees all
