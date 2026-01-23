@@ -111,11 +111,21 @@ router.post('/:id/upload', protect, admin, upload.single('file'), async (req, re
 // @desc    Get all active exams
 // @route   GET /api/exams
 // @access  Private (Student)
-router.get('/', protect, async (req, res) => {
+/*router.get('/', protect, async (req, res) => {
     const exams = await Exam.find({ isActive: true }); // select('-questions') removed
     res.json(exams);
-});
+});*/
+router.get('/', protect, async (req, res) => {
+    let exams;
 
+    if (req.user.role === 'admin') {
+        exams = await Exam.find(); // admin sees all
+    } else {
+        exams = await Exam.find({ isActive: true }); // students see active only
+    }
+
+    res.json(exams);
+});
 // @desc    Get single exam with questions (Admin only gets all details, Student gets limited?)
 //          Actually, student needs questions when starting exam.
 // @route   GET /api/exams/:id
