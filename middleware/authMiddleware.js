@@ -22,30 +22,30 @@ const protect = (req, res, next) => {
         return res.status(401).json({ message: 'Not authorized, no token' });
     }
 };*/
-const User = require("../models/User");
+const protect = (req, res, next) => {
+  console.log("🟢 PROTECT HIT", req.method, req.originalUrl);
 
-const protect = async (req, res, next) => {
   let token;
-
   if (
     req.headers.authorization &&
     req.headers.authorization.startsWith("Bearer")
   ) {
-    try {
-      token = req.headers.authorization.split(" ")[1];
-
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-      req.user = await User.findById(decoded.id).select("-password");
-
-      next();
-    } catch (error) {
-      return res.status(401).json({ message: "Not authorized, token failed" });
-    }
+    token = req.headers.authorization.split(" ")[1];
   }
 
   if (!token) {
-    return res.status(401).json({ message: "Not authorized, no token" });
+    console.log("❌ NO TOKEN");
+    return res.status(401).json({ message: "No token" });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    console.log("🟢 DECODED:", decoded);
+    req.user = decoded;
+    next();
+  } catch (e) {
+    console.log("❌ TOKEN INVALID");
+    return res.status(401).json({ message: "Token invalid" });
   }
 };
 
