@@ -186,13 +186,23 @@ router.post("/", protect, admin, async (req, res) => {
     res.status(500).json({ message: "Failed to create exam" });
   }
 });
-/*
-router.post('/', protect, async (req, res) => {
-  res.json({
-    ok: true,
-    user: req.user
-  });
-});*/
+
+global.exams = global.exams || [];
+router.post("/", protect, admin, (req, res) => {
+  const exam = {
+    id: Date.now(),
+    ...req.body,
+    isActive: true
+  };
+
+  global.exams.push(exam);
+  res.status(201).json(exam);
+});
+
+router.get("/", protect, (req, res) => {
+  res.json(global.exams);
+});
+
 
 // @desc    Add question to exam
 // @route   POST /api/exams/:id/questions
