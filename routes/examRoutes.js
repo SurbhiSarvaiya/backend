@@ -122,9 +122,9 @@ router.get("/", protect, async (req, res) => {
     let exams;
 
     if (req.user.role === "admin") {
-      exams = await Exam.find().sort({ createdAt: -1 });
+      exams = await Exam.find();
     } else {
-      exams = await Exam.find({ isActive: true }).sort({ createdAt: -1 });
+      exams = await Exam.find({ isActive: true });
     }
 
     res.json(exams);
