@@ -188,26 +188,28 @@ router.post("/", protect, admin, async (req, res) => {
   }
 });
 */
-let exams = [];
-
+const fs = require("fs");
+const path = require("path");
+const filePath = path.join(__dirname, "../data/exams.json");
+const readExams = () =>
+  JSON.parse(fs.readFileSync(filePath, "utf-8"));
+const writeExams = (data) =>
+  fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
 router.post("/", protect, admin, (req, res) => {
-  const { title, duration, totalMarks, passingMarks } = req.body;
-
+  const exams = readExams();
   const exam = {
     id: Date.now().toString(),
-    title,
-    duration,
-    totalMarks,
-    passingMarks,
+    ...req.body,
     isActive: true
   };
-
   exams.push(exam);
+  writeExams(exams);
+
   res.status(201).json(exam);
 });
 
 router.get("/", protect, (req, res) => {
-  res.json(exams);
+  res.json(readExams());
 });
 
 // @desc    Add question to exam
