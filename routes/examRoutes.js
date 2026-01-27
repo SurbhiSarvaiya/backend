@@ -116,12 +116,16 @@ router.post('/:id/upload', protect, admin, upload.single('file'), async (req, re
     res.json(exams);
 });*/
 
-router.get('/', protect, async (req, res) => {
+
+router.get("/", protect, async (req, res) => {
   try {
-    const exams =
-      req.user.role === "admin"
-        ? await Exam.find()
-        : await Exam.find({ isActive: true });
+    let exams;
+
+    if (req.user.role === "admin") {
+      exams = await Exam.find().sort({ createdAt: -1 });
+    } else {
+      exams = await Exam.find({ isActive: true }).sort({ createdAt: -1 });
+    }
 
     res.json(exams);
   } catch (err) {
