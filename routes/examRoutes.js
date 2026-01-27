@@ -117,22 +117,18 @@ router.post('/:id/upload', protect, admin, upload.single('file'), async (req, re
 });*/
 
 
-router.get("/", protect, async (req, res) => {
+router.get('/', protect, async (req, res) => {
   try {
-    let exams;
-
-    if (req.user.role === "admin") {
-      exams = await Exam.find();
-    } else {
-      exams = await Exam.find({ isActive: true });
-    }
+    const exams =
+      req.user.role === "admin"
+        ? await Exam.find()
+        : await Exam.find({ isActive: true });
 
     res.json(exams);
   } catch (err) {
     res.status(500).json({ message: "Failed to fetch exams" });
   }
 });
-
 
 // @desc    Get single exam with questions (Admin only gets all details, Student gets limited?)
 //          Actually, student needs questions when starting exam.
