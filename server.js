@@ -8,7 +8,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const app = express();
-
+app.disable("etag");
 const PORT = process.env.PORT || 5000;
 
 // Middleware
