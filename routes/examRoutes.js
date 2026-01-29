@@ -190,18 +190,27 @@ router.post("/", protect, admin, async (req, res) => {
 */
 const fs = require("fs");
 const path = require("path");
+
 const filePath = path.join(__dirname, "../data/exams.json");
-const readExams = () =>
-  JSON.parse(fs.readFileSync(filePath, "utf-8"));
-const writeExams = (data) =>
+
+const readExams = () => {
+  if (!fs.existsSync(filePath)) return [];
+  return JSON.parse(fs.readFileSync(filePath, "utf-8"));
+};
+
+const writeExams = (data) => {
   fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+};
+
 router.post("/", protect, admin, (req, res) => {
   const exams = readExams();
+
   const exam = {
     id: Date.now().toString(),
     ...req.body,
     isActive: true
   };
+
   exams.push(exam);
   writeExams(exams);
 
