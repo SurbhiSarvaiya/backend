@@ -218,6 +218,7 @@ router.post("/", protect, admin, (req, res) => {
 });
 
 router.get("/", protect, (req, res) => {
+    res.setHeader("Cache-Control", "no-store");
   res.json(readExams());
 });
 
